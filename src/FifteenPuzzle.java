@@ -8,12 +8,12 @@ public class FifteenPuzzle extends JFrame {
     JPanel[][] panelArray= new JPanel[4][4];
     JButton tiles = new JButton();
 
-    public JPanel randomPanelFill(int gridSize){
+    public JPanel randomPanelFill(){
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(gridSize, gridSize));
 
-        List<JComponent> randomList = randomNumbers(gridSize);
+        List<JComponent> randomList = setNumbers(gridSize);
         int addingNr = 0;
 
         for (int i = 0; i < gridSize; i++) {
@@ -30,7 +30,7 @@ public class FifteenPuzzle extends JFrame {
     }
 
 
-    public List<JComponent> randomNumbers(int size){
+    public List<JComponent> setNumbers(int size){
 
         List<JComponent> jcList = new ArrayList<>();
         for (int i = 0; i < size*size-1; i++) {
@@ -43,9 +43,11 @@ public class FifteenPuzzle extends JFrame {
     }
 
 
+
+
     public FifteenPuzzle() {
 
-        this.add(randomPanelFill(gridSize));
+        this.add(randomPanelFill());
         tiles.addMouseListener(new MouseAction(tiles));
 
         setSize(300, 300);
