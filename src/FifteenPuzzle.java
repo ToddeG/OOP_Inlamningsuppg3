@@ -60,8 +60,23 @@ public class FifteenPuzzle extends JFrame {
 //
 //
 //
+//
 //        return jp;
 //    }
+    private void swapButton(int x, int y, int x1, int y1) {
+        Component a = panelArray[x][y].getComponent(0);
+        Component b = panelArray[x1][y1].getComponent(0);
+
+        panelArray[x][y].remove(0);
+        panelArray[x1][y1].remove(0);
+
+        panelArray[x][y].add(b);
+        panelArray[x1][y1].add(a);
+
+        b.requestFocus();
+        this.repaint();
+    }
+
 
 
 
