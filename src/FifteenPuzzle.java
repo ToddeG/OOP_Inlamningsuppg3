@@ -65,7 +65,6 @@ public class FifteenPuzzle extends JFrame {
         panelArray[x][y].add(b);
         panelArray[x1][y1].add(a);
 
-        b.requestFocus();
         this.repaint();
     }
 
