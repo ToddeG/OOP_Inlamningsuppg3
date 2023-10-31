@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FifteenPuzzle extends JFrame {
+//    JPanel[][] panelArray= new JPanel[4][4];
 
-    JPanel jp = new JPanel();
+    JPanel jPan = new JPanel();
     JButton jb1 = new JButton("1");
     JButton jb2 = new JButton("2");
     JButton jb3 = new JButton("3");
@@ -25,25 +26,25 @@ public class FifteenPuzzle extends JFrame {
 
 
     public FifteenPuzzle() {
-        this.add(jp);
-        jp.add(jb1);
-        jp.add(jb2);
-        jp.add(jb3);
-        jp.add(jb4);
-        jp.add(jb5);
-        jp.add(jb6);
-        jp.add(jb7);
-        jp.add(jb8);
-        jp.add(jb9);
-        jp.add(jb10);
-        jp.add(jb11);
-        jp.add(jb12);
-        jp.add(jb13);
-        jp.add(jb14);
-        jp.add(jb15);
-        jp.add(jb16);
+        this.add(jPan);
+        jPan.add(jb1);
+        jPan.add(jb2);
+        jPan.add(jb3);
+        jPan.add(jb4);
+        jPan.add(jb5);
+        jPan.add(jb6);
+        jPan.add(jb7);
+        jPan.add(jb8);
+        jPan.add(jb9);
+        jPan.add(jb10);
+        jPan.add(jb11);
+        jPan.add(jb12);
+        jPan.add(jb13);
+        jPan.add(jb14);
+        jPan.add(jb15);
+        jPan.add(jb16);
 
-        jp.setLayout(new GridLayout(4,4));
+        jPan.setLayout(new GridLayout(4,4));
 
         pack();
         setVisible(true);
@@ -51,6 +52,16 @@ public class FifteenPuzzle extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+//    private JPanel getPanel(int size) {
+//        JPanel jp = new JPanel();
+//        GridLayout grLay = new GridLayout(size, size);
+//        jp.setLayout(grLay);
+//
+//
+//
+//
+//        return jp;
+//    }
 
 
 
