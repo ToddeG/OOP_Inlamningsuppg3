@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FifteenPuzzle extends JFrame {
+
     int gridSize = 4;
-    JPanel[][] panelArray= new JPanel[4][4];
+    JPanel[][] panelArray= new JPanel[gridSize][gridSize];
     JButton tiles = new JButton();
 
     public JPanel randomPanelFill(){
@@ -30,10 +31,10 @@ public class FifteenPuzzle extends JFrame {
     }
 
 
-    public List<JComponent> setNumbers(int size){
+    public List<JComponent> setNumbers(){
 
         List<JComponent> jcList = new ArrayList<>();
-        for (int i = 0; i < size*size-1; i++) {
+        for (int i = 0; i < gridSize*gridSize-1; i++) {
             tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
             jcList.add(tiles);
@@ -45,7 +46,39 @@ public class FifteenPuzzle extends JFrame {
 
 
 
+
     public FifteenPuzzle() {
+
+
+    }
+    private void swapButton(int x, int y, int emptyIndex) {
+        Component a = panelArray[x][y].getComponent(0);
+
+        int x1 = emptyIndex / gridSize;
+        int y1 = emptyIndex % gridSize;
+
+        Component b = panelArray[x1][y1].getComponent(0);
+
+        panelArray[x][y].remove(0);
+        panelArray[x1][y1].remove(0);
+
+        panelArray[x][y].add(b);
+        panelArray[x1][y1].add(a);
+
+        b.requestFocus();
+        this.repaint();
+    }
+
+    private int findEmptyIndex() {
+        for (int index = 0; index < gridSize * gridSize; index++) {
+            int i = index / gridSize;
+            int j = index % gridSize;
+            if (!(panelArray[i][j].getComponent(0) instanceof JButton)) {
+                return index;
+            }
+        }
+        return 0;
+    }
 
         this.add(randomPanelFill());
         tiles.addMouseListener(new MouseAction(tiles));
@@ -53,7 +86,7 @@ public class FifteenPuzzle extends JFrame {
         setSize(300, 300);
         setVisible(true);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 
     }
 }
