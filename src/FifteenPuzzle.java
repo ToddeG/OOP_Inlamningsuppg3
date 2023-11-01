@@ -1,21 +1,42 @@
 import javax.swing.*;
 import java.awt.*;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class FifteenPuzzle extends JFrame {
 
     int gridSize = 4;
 
-    JPanel[][] panelArray= new JPanel[gridSize][gridSize];
+    JPanel[][] panelArray = new JPanel[gridSize][gridSize];
     JButton tiles = new JButton();
 
-    public JPanel randomPanelFill() {
+    JButton newGameButton = new JButton("Nytt Spel");
+    public JPanel createGameScreen() {
+        JPanel screenPanel = new JPanel();
+        screenPanel.add(panelFill());
+        screenPanel.add(newGameButton);
+
+        return screenPanel;
+    }
+
+
+//    public void actionPerformed(ActionEvent e) {
+//        if (e.getSource() == newGameButton) {
+//
+//            repaint();
+//
+//        }
+//    }
+
+    public JPanel panelFill() {
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(gridSize, gridSize));
 
-        List<JComponent> randomList = setNumbers();
+        List<JComponent> list = setRandomNumbers();
         int addingNr = 0;
 
         for (int i = 0; i < gridSize; i++) {
@@ -23,7 +44,7 @@ public class FifteenPuzzle extends JFrame {
             for (int j = 0; j < gridSize; j++) {
                 panelArray[i][j] = new JPanel();
                 panelArray[i][j].setLayout(new GridLayout(1,1));
-                panelArray[i][j].add(randomList.get(addingNr++));
+                panelArray[i][j].add(list.get(addingNr++));
 
                 gamePanel.add(panelArray[i][j]);
             }
@@ -31,26 +52,32 @@ public class FifteenPuzzle extends JFrame {
         return gamePanel;
     }
 
-
-    public List<JComponent> setNumbers() {
+    public List<JComponent> setRandomNumbers() {
 
         List<JComponent> jcList = new ArrayList<>();
+        Random r = new Random();
         for (int i = 0; i < gridSize*gridSize-1; i++) {
             tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
             jcList.add(tiles);
         }
         jcList.add(new JPanel());
+        int size = jcList.size();
+        for (int i = size - 1; i > 0; i--) {
+            int j = r.nextInt(i + 1);
+            JComponent tempJC = jcList.get(i);
+            jcList.set(i, jcList.get(j));
+            jcList.set(j, tempJC);
+
+        }
+
         return jcList;
     }
 
-
-
-
-
     public FifteenPuzzle() {
 
-        this.add(randomPanelFill());
+
+        this.add(createGameScreen());
         tiles.addMouseListener(new MouseAction(tiles));
 
         setSize(300, 300);
@@ -59,6 +86,7 @@ public class FifteenPuzzle extends JFrame {
 
 
     }
+
     private void swapButton(int x, int y, int emptyIndex) {
         Component a = panelArray[x][y].getComponent(0);
 
@@ -86,10 +114,6 @@ public class FifteenPuzzle extends JFrame {
         }
         return 0;
     }
-
-
-
-
 
 
 }
