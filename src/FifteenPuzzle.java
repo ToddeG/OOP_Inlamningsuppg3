@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,23 +13,21 @@ public class FifteenPuzzle extends JFrame {
     JPanel[][] panelArray = new JPanel[gridSize][gridSize];
     JButton tiles = new JButton();
 
+
     JButton newGameButton = new JButton("Nytt Spel");
+
     public JPanel createGameScreen() {
         JPanel screenPanel = new JPanel();
         screenPanel.add(panelFill());
+        newGameButton.addActionListener(new NewGameActionListener(this));
         screenPanel.add(newGameButton);
 
         return screenPanel;
     }
 
 
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == newGameButton) {
-//
-//            repaint();
-//
-//        }
-//    }
+
+
 
     public JPanel panelFill() {
 
@@ -57,8 +55,10 @@ public class FifteenPuzzle extends JFrame {
         List<JComponent> jcList = new ArrayList<>();
         Random r = new Random();
         for (int i = 0; i < gridSize*gridSize-1; i++) {
+
             tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
+            tiles.setPreferredSize(new Dimension(50, 50));
             jcList.add(tiles);
         }
         jcList.add(new JPanel());
@@ -113,6 +113,46 @@ public class FifteenPuzzle extends JFrame {
             }
         }
         return 0;
+    }
+
+    public void resetGame() {
+        List<JComponent> newPuzzleState = setRandomNumbers();
+        int addingNr = 0;
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                if (addingNr < gridSize * gridSize - 1) {
+                    if (newPuzzleState.get(addingNr) instanceof JButton) {
+                        JButton tile = (JButton) newPuzzleState.get(addingNr);
+                        panelArray[i][j].removeAll();
+                        panelArray[i][j].add(tile);
+                    }
+                    addingNr++;
+                }
+            }
+        }
+
+
+        int numTiles = gridSize * gridSize - 1;
+        Random random = new Random();
+
+        for (int i = numTiles - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+
+            JButton tile1 = (JButton) newPuzzleState.get(i);
+            JButton tile2 = (JButton) newPuzzleState.get(j);
+            String label1 = tile1.getText();
+            tile1.setText(tile2.getText());
+            tile2.setText(label1);
+        }
+
+        this.repaint();
+    }
+    public void closeGame() {
+        this.dispose();
+    }
+    public void exitGame() {
+        System.exit(0);
     }
 
 
