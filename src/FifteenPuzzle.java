@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,12 +9,13 @@ public class FifteenPuzzle extends JFrame {
     int gridSize = 4;
 
     JPanel[][] panelArray = new JPanel[gridSize][gridSize];
-    JButton tiles = new JButton();
 
+    JButton tiles = new JButton();
 
     JButton newGameButton = new JButton("Nytt Spel");
 
     public JPanel createGameScreen() {
+
         JPanel screenPanel = new JPanel();
         screenPanel.add(panelFill());
         newGameButton.addActionListener(new NewGameActionListener(this));
@@ -24,9 +23,6 @@ public class FifteenPuzzle extends JFrame {
 
         return screenPanel;
     }
-
-
-
 
 
     public JPanel panelFill() {
@@ -83,6 +79,7 @@ public class FifteenPuzzle extends JFrame {
         setSize(300, 300);
         setVisible(true);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
     }
@@ -151,9 +148,4 @@ public class FifteenPuzzle extends JFrame {
     public void closeGame() {
         this.dispose();
     }
-    public void exitGame() {
-        System.exit(0);
-    }
-
-
 }

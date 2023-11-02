@@ -1,6 +1,9 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class MouseAction extends MouseAdapter {
@@ -19,6 +22,15 @@ public class MouseAction extends MouseAdapter {
         }
 
 
+    }
+    public void actionPerformed(ActionEvent e, FifteenPuzzle fp) {
+        if (e.getSource() == fp.newGameButton) {
+
+            fp.panelFill();
+
+            fp.repaint();
+
+        }
     }
 
 }
