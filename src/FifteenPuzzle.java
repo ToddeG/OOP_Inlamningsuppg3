@@ -1,12 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class FifteenPuzzle extends JFrame {
+public class FifteenPuzzle extends JFrame{
 
     int gridSize = 4;
 
@@ -22,14 +20,6 @@ public class FifteenPuzzle extends JFrame {
         return screenPanel;
     }
 
-
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == newGameButton) {
-//
-//            repaint();
-//
-//        }
-//    }
 
     public JPanel panelFill() {
 
@@ -59,6 +49,7 @@ public class FifteenPuzzle extends JFrame {
         for (int i = 0; i < gridSize*gridSize-1; i++) {
             tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
+            tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
             jcList.add(tiles);
         }
         jcList.add(new JPanel());
@@ -70,15 +61,13 @@ public class FifteenPuzzle extends JFrame {
             jcList.set(j, tempJC);
 
         }
-
         return jcList;
     }
 
+
     public FifteenPuzzle() {
 
-
         this.add(createGameScreen());
-        tiles.addMouseListener(new MouseAction(tiles));
 
         setSize(300, 300);
         setVisible(true);
@@ -87,33 +76,9 @@ public class FifteenPuzzle extends JFrame {
 
     }
 
-    private void swapButton(int x, int y, int emptyIndex) {
-        Component a = panelArray[x][y].getComponent(0);
 
-        int x1 = emptyIndex / gridSize;
-        int y1 = emptyIndex % gridSize;
 
-        Component b = panelArray[x1][y1].getComponent(0);
 
-        panelArray[x][y].remove(0);
-        panelArray[x1][y1].remove(0);
-
-        panelArray[x][y].add(b);
-        panelArray[x1][y1].add(a);
-
-        this.repaint();
-    }
-
-    private int findEmptyIndex() {
-        for (int index = 0; index < gridSize * gridSize; index++) {
-            int i = index / gridSize;
-            int j = index % gridSize;
-            if (!(panelArray[i][j].getComponent(0) instanceof JButton)) {
-                return index;
-            }
-        }
-        return 0;
-    }
 
 
 }
