@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class FifteenPuzzle extends JFrame{
+public class FifteenPuzzle extends JFrame {
 
     int gridSize = 4;
 
     JPanel[][] panelArray = new JPanel[gridSize][gridSize];
+
     JButton tiles = new JButton();
 
     JButton newGameButton = new JButton("Nytt Spel");
+
     public JPanel createGameScreen() {
+
         JPanel screenPanel = new JPanel();
         screenPanel.add(panelFill());
+        newGameButton.addActionListener(new NewGameActionListener(this));
         screenPanel.add(newGameButton);
 
         return screenPanel;
@@ -49,6 +53,7 @@ public class FifteenPuzzle extends JFrame{
         for (int i = 0; i < gridSize*gridSize-1; i++) {
             tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
+            tiles.setPreferredSize(new Dimension(50, 50));
             tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
             jcList.add(tiles);
         }
@@ -61,9 +66,9 @@ public class FifteenPuzzle extends JFrame{
             jcList.set(j, tempJC);
 
         }
+
         return jcList;
     }
-
 
     public FifteenPuzzle() {
 
@@ -72,6 +77,7 @@ public class FifteenPuzzle extends JFrame{
         setSize(300, 300);
         setVisible(true);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
     }
@@ -80,5 +86,7 @@ public class FifteenPuzzle extends JFrame{
 
 
 
-
+    public void closeGame() {
+        this.dispose();
+    }
 }
