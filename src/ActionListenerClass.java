@@ -35,22 +35,23 @@ public class ActionListenerClass extends JFrame implements ActionListener {
                swapButton(x, y, findEmptyIndex());
            }
         }
+
     }
 
     private void swapButton(int x, int y, int emptyIndex) {
-        Component a = panelArray[x][y].getComponent(0);
-        panelArray[x][y].remove(0);
 
         int x1 = emptyIndex / gridSize;
         int y1 = emptyIndex % gridSize;
 
+        Component a = panelArray[x][y].getComponent(0);
+        panelArray[x][y].remove(0);
         Component b = panelArray[x1][y1].getComponent(0);
-
+        b.setVisible(true);
         panelArray[x1][y1].remove(0);
-        b.setVisible(false);
+
         panelArray[x][y].add(b);
         panelArray[x1][y1].add(a);
-
+        b.setVisible(false);
         this.repaint();
     }
 
