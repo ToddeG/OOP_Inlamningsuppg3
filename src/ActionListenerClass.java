@@ -6,9 +6,8 @@ import java.util.Objects;
 
 
 public class ActionListenerClass extends JFrame implements ActionListener {
-    JPanel[][] panelArray;
-    JButton jb;
-    int gridSize;
+    private final JPanel[][] panelArray;
+    private final int gridSize;
 
     public ActionListenerClass(JPanel[][] panelArray, int i) {
         this.panelArray = panelArray;
@@ -88,12 +87,12 @@ public class ActionListenerClass extends JFrame implements ActionListener {
         return 0;
     }
 
-    public boolean areAdjacent(int x, int x1, int y, int y1) {
+    private boolean areAdjacent(int x, int x1, int y, int y1) {
 
         return Math.abs(x - x1) == 1 && y == y1 || Math.abs(y - y1) == 1 && x == x1;
     }
 
-    public boolean thingsAreInPlace(JPanel[][] jPA) {
+    private boolean thingsAreInPlace(JPanel[][] jPA) {
 
         int value = 1;
         int checker = 0;
@@ -109,7 +108,7 @@ public class ActionListenerClass extends JFrame implements ActionListener {
                     button = (JButton) temp;
                 }
                 if (button != null) {
-                    if (Objects.equals(button.getText(), String.valueOf(value))) {
+                    if (Integer.parseInt(button.getText()) == value) {
                         checker++;
                     }
                 }

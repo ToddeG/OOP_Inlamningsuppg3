@@ -15,7 +15,7 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
 
     private final JButton newGameButton = new JButton("Nytt Spel");
 
-    JButton testButton  = new JButton("Test");
+    private final JButton testButton  = new JButton("Test");
 
 
     public JPanel createGameScreen(JPanel jp) {
@@ -57,9 +57,7 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
 
         List<JComponent> jcList = setNumbers();
         Random r = new Random();
-        JPanel jp = new JPanel();
 
-        jcList.add(jp);
         int size = jcList.size();
         for (int i = size - 1; i > 0; i--) {
             int j = r.nextInt(i + 1);
@@ -105,6 +103,7 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
 
         this.add(createGameScreen(panelFill(setNumbers())));
 
+        setTitle("15 Test");
         setSize(225, 280);
         setVisible(true);
         setLocationRelativeTo(null);
