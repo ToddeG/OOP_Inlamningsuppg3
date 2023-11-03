@@ -2,14 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 
 public class ActionListenerClass extends JFrame implements ActionListener {
     JPanel[][] panelArray;
     JButton jb;
     int gridSize;
-    public ActionListenerClass(JButton jb, JPanel[][] panelArray, int i){
-        this.jb = jb;
+
+    public ActionListenerClass(JPanel[][] panelArray, int i) {
         this.panelArray = panelArray;
         this.gridSize = i;
     }
@@ -35,23 +36,44 @@ public class ActionListenerClass extends JFrame implements ActionListener {
                swapButton(x, y, findEmptyIndex());
            }
         }
-
     }
 
     private void swapButton(int x, int y, int emptyIndex) {
+        Component a = panelArray[x][y].getComponent(0);
+
+        panelArray[x][y].remove(0);
 
         int x1 = emptyIndex / gridSize;
         int y1 = emptyIndex % gridSize;
 
-        Component a = panelArray[x][y].getComponent(0);
-        panelArray[x][y].remove(0);
         Component b = panelArray[x1][y1].getComponent(0);
         b.setVisible(true);
+
         panelArray[x1][y1].remove(0);
 
         panelArray[x][y].add(b);
         panelArray[x1][y1].add(a);
         b.setVisible(false);
+
+
+        if (thingsAreInPlace(panelArray)) {
+
+
+            JLabel jl = new JLabel("Grattis, du vann!");
+            jl.setForeground(Color.magenta);
+
+
+            JPanel jp = new JPanel();
+            jp.add(jl);
+
+            JFrame victoryScreen = new JFrame();
+            victoryScreen.add(jp);
+            victoryScreen.setLocationRelativeTo(null);
+            victoryScreen.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            victoryScreen.setSize(200, 80);
+            victoryScreen.setVisible(true);
+        }
+
         this.repaint();
     }
 
@@ -66,10 +88,39 @@ public class ActionListenerClass extends JFrame implements ActionListener {
         return 0;
     }
 
-    public boolean areAdjacent(int x, int x1, int y, int y1){
+    public boolean areAdjacent(int x, int x1, int y, int y1) {
 
-        if(Math.abs(x - x1) == 1 && y == y1 || Math.abs(y - y1) == 1 && x == x1){
-            return true;
-        }else return false;
+        return Math.abs(x - x1) == 1 && y == y1 || Math.abs(y - y1) == 1 && x == x1;
+    }
+
+    public boolean thingsAreInPlace(JPanel[][] jPA) {
+
+        int value = 1;
+        int checker = 0;
+
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+
+                Component temp = jPA[i][j].getComponent(0);
+                JButton button = null;
+
+                if (temp instanceof JButton) {
+                    button = (JButton) temp;
+                }
+                if (button != null) {
+                    if (Objects.equals(button.getText(), String.valueOf(value))) {
+                        checker++;
+                    }
+                }
+                if (checker == 15) {
+                    return true;
+
+                }
+                value++;
+            }
+
+        }
+        return false;
     }
 }

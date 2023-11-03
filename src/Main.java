@@ -5,6 +5,5 @@ public class Main {
 
         FifteenPuzzle fp = new FifteenPuzzle();
 
-
     }
 }
