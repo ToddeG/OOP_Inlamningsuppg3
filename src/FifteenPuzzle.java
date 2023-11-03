@@ -1,21 +1,43 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class FifteenPuzzle extends JFrame {
+public class FifteenPuzzle extends JFrame implements ActionListener {
 
-    int gridSize = 4;
+    private final int gridSize = 4;
 
-    JPanel[][] panelArray= new JPanel[gridSize][gridSize];
-    JButton tiles = new JButton();
+    private final JPanel[][] panelArray = new JPanel[gridSize][gridSize];
 
-    public JPanel randomPanelFill() {
+    private final JButton newGameButton = new JButton("Nytt Spel");
+
+    private final JButton testButton  = new JButton("Test");
+
+
+    public JPanel createGameScreen(JPanel jp) {
+
+        JPanel screenPanel = new JPanel();
+        screenPanel.add(jp);
+        newGameButton.addActionListener(new NewGameActionListener(this));
+        screenPanel.add(newGameButton);
+        testButton.addActionListener(this);
+        screenPanel.add(testButton);
+
+
+        return screenPanel;
+    }
+
+
+    public JPanel panelFill(List<JComponent> list) {
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(gridSize, gridSize));
 
-        List<JComponent> randomList = setNumbers();
+        List<JComponent> jlist = list;
         int addingNr = 0;
 
         for (int i = 0; i < gridSize; i++) {
@@ -23,7 +45,7 @@ public class FifteenPuzzle extends JFrame {
             for (int j = 0; j < gridSize; j++) {
                 panelArray[i][j] = new JPanel();
                 panelArray[i][j].setLayout(new GridLayout(1,1));
-                panelArray[i][j].add(randomList.get(addingNr++));
+                panelArray[i][j].add(list.get(addingNr++));
 
                 gamePanel.add(panelArray[i][j]);
             }
@@ -31,65 +53,76 @@ public class FifteenPuzzle extends JFrame {
         return gamePanel;
     }
 
+    public List<JComponent> setRandomNumbers() {
 
-    public List<JComponent> setNumbers() {
+        List<JComponent> jcList = setNumbers();
+        Random r = new Random();
 
+        int size = jcList.size();
+        for (int i = size - 1; i > 0; i--) {
+            int j = r.nextInt(i + 1);
+            JComponent tempJC = jcList.get(i);
+            jcList.set(i, jcList.get(j));
+            jcList.set(j, tempJC);
+
+        }
+        return jcList;
+    }
+
+    public List<JComponent> setNumbers(){
         List<JComponent> jcList = new ArrayList<>();
+
         for (int i = 0; i < gridSize*gridSize-1; i++) {
-            tiles = new JButton("" + (i+1));
+            JButton tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
+            tiles.setForeground(Color.white);
+            tiles.setBackground(Color.red);
+            tiles.setPreferredSize(new Dimension(50, 50));
+            tiles.addActionListener(new ActionListenerClass(panelArray, gridSize));
             jcList.add(tiles);
         }
         jcList.add(new JPanel());
         return jcList;
     }
 
-
-
-
-
     public FifteenPuzzle() {
 
-        this.add(randomPanelFill());
-        tiles.addMouseListener(new MouseAction(tiles));
 
-        setSize(300, 300);
+        this.add(createGameScreen(panelFill(setRandomNumbers())));
+
+        setTitle("15 Spel");
+        setSize(225, 280);
         setVisible(true);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
     }
-    private void swapButton(int x, int y, int emptyIndex) {
-        Component a = panelArray[x][y].getComponent(0);
 
-        int x1 = emptyIndex / gridSize;
-        int y1 = emptyIndex % gridSize;
+    public FifteenPuzzle(boolean test) {
 
-        Component b = panelArray[x1][y1].getComponent(0);
+        this.add(createGameScreen(panelFill(setNumbers())));
 
-        panelArray[x][y].remove(0);
-        panelArray[x1][y1].remove(0);
+        setTitle("15 Test");
+        setSize(225, 280);
+        setVisible(true);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelArray[x][y].add(b);
-        panelArray[x1][y1].add(a);
 
-        this.repaint();
+    }
+    public void closeGame() {
+        this.dispose();
     }
 
-    private int findEmptyIndex() {
-        for (int index = 0; index < gridSize * gridSize; index++) {
-            int i = index / gridSize;
-            int j = index % gridSize;
-            if (!(panelArray[i][j].getComponent(0) instanceof JButton)) {
-                return index;
-            }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if ((e.getSource() == testButton)){
+            boolean test = true;
+            FifteenPuzzle testing = new FifteenPuzzle(test);
+            createGameScreen(panelFill(setNumbers()));
+            closeGame();
         }
-        return 0;
     }
-
-
-
-
-
-
 }
