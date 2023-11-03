@@ -2,26 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class FifteenPuzzle extends JFrame implements ActionListener {
 
-    int gridSize = 4;
+    private final int gridSize = 4;
 
-    JPanel[][] panelArray = new JPanel[gridSize][gridSize];
+    private final JPanel[][] panelArray = new JPanel[gridSize][gridSize];
 
-    JButton tiles = new JButton();
+    private final JButton newGameButton = new JButton("Nytt Spel");
 
-    JButton newGameButton = new JButton("Nytt Spel");
     JButton testButton  = new JButton("Test");
 
 
-    public JPanel createGameScreen() {
+    public JPanel createGameScreen(JPanel jp) {
 
         JPanel screenPanel = new JPanel();
-        screenPanel.add(panelFill());
+        screenPanel.add(jp);
         newGameButton.addActionListener(new NewGameActionListener(this));
         screenPanel.add(newGameButton);
         testButton.addActionListener(this);
@@ -31,25 +31,13 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
         return screenPanel;
     }
 
-    public JPanel createTestGameScreen() {
 
-        JPanel screenPanel = new JPanel();
-        screenPanel.add(panelInOrder());
-        newGameButton.addActionListener(new NewGameActionListener(this));
-        screenPanel.add(newGameButton);
-        testButton.addActionListener(this);
-        screenPanel.add(testButton);
-
-        return screenPanel;
-    }
-
-
-    public JPanel panelFill() {
+    public JPanel panelFill(List<JComponent> list) {
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(gridSize, gridSize));
 
-        List<JComponent> list = setRandomNumbers();
+        List<JComponent> jlist = list;
         int addingNr = 0;
 
         for (int i = 0; i < gridSize; i++) {
@@ -66,57 +54,33 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
     }
 
     public List<JComponent> setRandomNumbers() {
-        
-        List<JComponent> jcList = new ArrayList<>();
-        Random r = new Random();
-        for (int i = 0; i < gridSize*gridSize-1; i++) {
-            tiles = new JButton("" + (i+1));
-            tiles.setName(""+i);
-            tiles.setPreferredSize(new Dimension(50, 50));
-            tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
-            jcList.add(tiles);
-        }
 
-        jcList.add(new JPanel());
+        List<JComponent> jcList = setNumbers();
+        Random r = new Random();
+        JPanel jp = new JPanel();
+
+        jcList.add(jp);
         int size = jcList.size();
         for (int i = size - 1; i > 0; i--) {
             int j = r.nextInt(i + 1);
             JComponent tempJC = jcList.get(i);
             jcList.set(i, jcList.get(j));
             jcList.set(j, tempJC);
+
         }
         return jcList;
-    }
-
-    public JPanel panelInOrder() {
-
-        JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridLayout(gridSize, gridSize));
-
-        List<JComponent> list = setNumbers();
-        int addingNr = 0;
-
-        for (int i = 0; i < gridSize; i++) {
-            panelArray[i] = new JPanel[gridSize];
-            for (int j = 0; j < gridSize; j++) {
-                panelArray[i][j] = new JPanel();
-                panelArray[i][j].setLayout(new GridLayout(1,1));
-                panelArray[i][j].add(list.get(addingNr++));
-
-                gamePanel.add(panelArray[i][j]);
-            }
-        }
-        return gamePanel;
     }
 
     public List<JComponent> setNumbers(){
         List<JComponent> jcList = new ArrayList<>();
 
         for (int i = 0; i < gridSize*gridSize-1; i++) {
-            tiles = new JButton("" + (i+1));
+            JButton tiles = new JButton("" + (i+1));
             tiles.setName(""+i);
+            tiles.setForeground(Color.white);
+            tiles.setBackground(Color.red);
             tiles.setPreferredSize(new Dimension(50, 50));
-            tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
+            tiles.addActionListener(new ActionListenerClass(panelArray, gridSize));
             jcList.add(tiles);
         }
         jcList.add(new JPanel());
@@ -125,8 +89,10 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
 
     public FifteenPuzzle() {
 
-        this.add(createGameScreen());
 
+        this.add(createGameScreen(panelFill(setRandomNumbers())));
+
+        setTitle("15 Spel");
         setSize(225, 280);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -137,7 +103,7 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
 
     public FifteenPuzzle(boolean test) {
 
-        this.add(createTestGameScreen());
+        this.add(createGameScreen(panelFill(setNumbers())));
 
         setSize(225, 280);
         setVisible(true);
@@ -156,7 +122,7 @@ public class FifteenPuzzle extends JFrame implements ActionListener {
         if ((e.getSource() == testButton)){
             boolean test = true;
             FifteenPuzzle testing = new FifteenPuzzle(test);
-            createTestGameScreen();
+            createGameScreen(panelFill(setNumbers()));
             closeGame();
         }
     }

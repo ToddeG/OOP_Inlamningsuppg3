@@ -3,17 +3,19 @@ import java.awt.event.ActionListener;
 
 public class NewGameActionListener implements ActionListener {
 
-    private FifteenPuzzle fp;
+    private final FifteenPuzzle fp;
 
 
-    public NewGameActionListener(FifteenPuzzle fp) {
+    public NewGameActionListener(FifteenPuzzle fifp) {
 
-        this.fp = fp;
+        this.fp = fifp;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        FifteenPuzzle newGame = new FifteenPuzzle();
         fp.closeGame();
+        FifteenPuzzle newGame = new FifteenPuzzle();
+
 
     }
 }
