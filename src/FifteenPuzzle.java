@@ -13,6 +13,8 @@ public class FifteenPuzzle extends JFrame {
     JButton tiles = new JButton();
 
     JButton newGameButton = new JButton("Nytt Spel");
+    JButton testButton  = new JButton("Test");
+    boolean test = false;
 
     public JPanel createGameScreen() {
 
@@ -30,7 +32,7 @@ public class FifteenPuzzle extends JFrame {
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridLayout(gridSize, gridSize));
 
-        List<JComponent> list = setRandomNumbers();
+        List<JComponent> list = setNumbers();
         int addingNr = 0;
 
         for (int i = 0; i < gridSize; i++) {
@@ -47,7 +49,7 @@ public class FifteenPuzzle extends JFrame {
     }
 
     public List<JComponent> setRandomNumbers() {
-
+        
         List<JComponent> jcList = new ArrayList<>();
         Random r = new Random();
         for (int i = 0; i < gridSize*gridSize-1; i++) {
@@ -57,6 +59,7 @@ public class FifteenPuzzle extends JFrame {
             tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
             jcList.add(tiles);
         }
+
         jcList.add(new JPanel());
         int size = jcList.size();
         for (int i = size - 1; i > 0; i--) {
@@ -64,9 +67,21 @@ public class FifteenPuzzle extends JFrame {
             JComponent tempJC = jcList.get(i);
             jcList.set(i, jcList.get(j));
             jcList.set(j, tempJC);
-
         }
+        return jcList;
+    }
 
+    public List<JComponent> setNumbers(){
+        List<JComponent> jcList = new ArrayList<>();
+
+        for (int i = 0; i < gridSize*gridSize-1; i++) {
+            tiles = new JButton("" + (i+1));
+            tiles.setName(""+i);
+            tiles.setPreferredSize(new Dimension(50, 50));
+            tiles.addActionListener(new ActionListenerClass(tiles, panelArray, gridSize));
+            jcList.add(tiles);
+        }
+        jcList.add(new JPanel());
         return jcList;
     }
 
@@ -74,19 +89,16 @@ public class FifteenPuzzle extends JFrame {
 
         this.add(createGameScreen());
 
-        setSize(300, 300);
+        setSize(225, 280);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
     }
-
-
-
-
-
     public void closeGame() {
         this.dispose();
     }
+
+
 }
